@@ -17,10 +17,22 @@ public class LanchoneteDb {
 	}
 	
 	public void verificarTabelas () {
+		//Verifica se existe as tabelas no banco de dados
 		
 	}
 	
 	public void criarTabelas () {
-		Lanches.criarTabela();
+		//Criar todas as tabelas no banco de dados
+		LanchesDb.criarTabela();
+	}
+	
+	public void close() {
+		try {
+			this.conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
