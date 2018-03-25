@@ -1,0 +1,6 @@
+CREATE TABLE `lanches` (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`nome_lache`	TEXT NOT NULL,
+	`ingredientes`	TEXT,
+	`preco`	REAL NOT NULL
+);
