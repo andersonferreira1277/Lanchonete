@@ -9,7 +9,7 @@ public class LanchoneteDb {
 	private static Connection conn;
 	
 	public LanchoneteDb(Connection conn) {
-		this.conn = conn;
+		LanchoneteDb.conn = conn;
 	}
 	
 	public static Connection getConnection() {
@@ -28,7 +28,7 @@ public class LanchoneteDb {
 	
 	public void close() {
 		try {
-			this.conn.close();
+			LanchoneteDb.conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -14,7 +14,6 @@ public class LanchoneteSqLIte{
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
-			System.out.println("Feito");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
