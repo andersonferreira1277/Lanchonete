@@ -1,5 +1,6 @@
 package br.ufal.db;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,13 +12,13 @@ import br.ufal.model.Lanche;
 
 public class LanchesDb {
 	
-	public static void criarTabela() {
+	public static void criarTabela(Connection conn) {
 		//Criar tabela lanches no banco de dados
 		String tabelaLanches = "CREATE TABLE `lanches` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,"
 				+ " `nome_lanche` TEXT NOT NULL, `ingredientes` TEXT, `preco` REAL NOT NULL )";
 		
 		try {
-			Statement stmt = LanchoneteDb.getConnection().createStatement();
+			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(tabelaLanches);
 			close(stmt);
 		} catch (SQLException e) {
@@ -27,38 +28,38 @@ public class LanchesDb {
 		}
 	}
 	
-	public static void insert(Lanche lanche) {
+	public static void insert(Connection conn, Lanche lanche) {
 		//Recebe um objeto da classe br.ufal.model.Lanche e inseri no banco de dados 
 		
 		String sql = "INSERT INTO lanches (nome_lanche, ingredientes, preco ) "
 				+ "values (?, ?, ?)";
 		
 		try {
-			PreparedStatement stmt = LanchoneteDb.getConnection().prepareStatement(sql);
+			PreparedStatement preStmt = conn.prepareStatement(sql);
 			
 			//Inserindo os dados no sql
-			stmt.setString(1, lanche.getNome());
-			stmt.setString(2, lanche.getIngredientes());
-			stmt.setFloat(3, lanche.getPreco());
+			preStmt.setString(1, lanche.getNome());
+			preStmt.setString(2, lanche.getIngredientes());
+			preStmt.setFloat(3, lanche.getPreco());
 			//end
 			
-			stmt.executeUpdate();
-			LanchoneteDb.getConnection().commit();
-			close(stmt);
+			preStmt.executeUpdate();
+			conn.commit();
+			close(preStmt);
 			
 		} catch (Exception e) {
 			
 		}
 	}
 
-	public static List<Lanche> select() {
+	public static List<Lanche> select(Connection conn) {
 		//Retorna todos os lanches do banco de dados
 		
 		List<Lanche> lanches = new ArrayList<Lanche>();
 		String sql = "SELECT * FROM lanches;";
 		try {
-			Statement stmt = LanchoneteDb.getConnection().createStatement();
-			LanchoneteDb.getConnection().setAutoCommit(false);
+			Statement stmt = conn.createStatement();
+			conn.setAutoCommit(false);
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			while (rs.next()) {
@@ -77,13 +78,13 @@ public class LanchesDb {
 		return lanches;
 	}
 	
-	public static void update(Lanche lanche) {
+	public static void update(Connection conn, Lanche lanche) {
 		//Atualiza um registro de lanche
 		String sql = "UPDATE lanches set nome_lanche=?, ingredientes=?, preco=? WHERE id=?;";
 		
 		try {
 			//LanchoneteDb.getConnection().setAutoCommit(false);
-			PreparedStatement stmt = LanchoneteDb.getConnection().prepareStatement(sql);
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			
 			stmt.setString(1, lanche.getNome());
 			stmt.setString(2, lanche.getIngredientes());
@@ -92,7 +93,7 @@ public class LanchesDb {
 			
 			stmt.executeUpdate();
 			
-			LanchoneteDb.getConnection().commit();
+			conn.commit();
 			
 			close(stmt);
 			

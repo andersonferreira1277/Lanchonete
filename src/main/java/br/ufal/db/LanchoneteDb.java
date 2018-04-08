@@ -5,34 +5,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class LanchoneteDb {
+	//Classe para verificar existencia de tabelas, caso não exista cria as tabelas
 	
-	private static Connection conn;
-	
-	public LanchoneteDb(Connection conn) {
-		LanchoneteDb.conn = conn;
-	}
-	
-	public static Connection getConnection() {
-		return conn;
-	}
-	
-	public void verificarTabelas () {
+	public static void verificarTabelas (Connection conn, FuncionarioDB funcionarioDB) {
 		//Verifica se existe as tabelas no banco de dados
-		
+		funcionarioDB.verificarTabelas(conn);
 	}
 	
-	public void criarTabelas () {
-		//Criar todas as tabelas no banco de dados
-		LanchesDb.criarTabela();
-	}
-	
-	public void close() {
-		try {
-			LanchoneteDb.conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 }
