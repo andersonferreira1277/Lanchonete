@@ -1,4 +1,4 @@
-package br.ufal.db;
+package br.ufal.persistencia;
 
 import java.util.List;
 
