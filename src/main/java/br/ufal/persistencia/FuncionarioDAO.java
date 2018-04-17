@@ -14,6 +14,7 @@ import br.ufal.model.Funcionario;
 public class FuncionarioDAO implements IFuncionarioDAO{
 	
 	//nomes das colunas como estão escritas no banco de dados
+	private final String TABLE_NAME = "FUNCIONARIOS";
 	private final String CODIGO_FUNCIONARIO = "codigo_funcionario";
 	private final String NOME_FUNCIONARIO = "nome_funcionario";
 	private final String USUARIO_FUNCIONARIO = "usuario_funcionario";
@@ -21,15 +22,20 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 	private final String EMAIL = "email";
 	private final String SENHA = "senha";
 	
-	public void criarTabelas(Connection conn) {
-		String tabelaFuncionarios = "CREATE TABLE `funcionarios` (\n" + 
-				"	`codigo_Funcionario`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" + 
-				"	`nome_Funcionario`	TEXT NOT NULL,\n" + 
-				"	`usuario_Funcionario`	TEXT NOT NULL UNIQUE,\n" + 
-				"	`endereco_Funcionario`	TEXT NOT NULL,\n" + 
-				"	`email`	TEXT NOT NULL,\n" + 
-				"	`senha`	TEXT NOT NULL\n" + 
-				");";
+	private Connection conn;
+	
+	public FuncionarioDAO(Connection conn) {
+		this.conn = conn;
+	}
+
+	public void criarTabelas() {
+		String tabelaFuncionarios = "CREATE TABLE funcionarios (\n" + 
+				"    codigo_Funcionario INTEGER NOT NULL PRIMARY KEY,\n" + 
+				"    nome_Funcionario VARCHAR(50) NOT NULL,\n" + 
+				"    usuario_Funcionario VARCHAR(15) NOT NULL UNIQUE,\n" + 
+				"    endereco_Funcionario VARCHAR(100) NOT NULL,\n" + 
+				"    email VARCHAR(30) NOT NULL UNIQUE,\n" + 
+				"    senha VARCHAR(64) NOT NULL);";
 		
 		try {
 			Statement stmt = conn.createStatement();
@@ -42,7 +48,7 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		
 	}
 
-	public void insert(Connection conn, Funcionario funcionario) {
+	public void insert(Funcionario funcionario) {
 		
 		String sql = "INSERT INTO funcionarios (nome_funcionario, usuario_funcionario, "
 				+ "endereco_funcionario, email, senha) VALUES (?, ?, ?, ?, ?)";
@@ -69,7 +75,7 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		}
 	}
 	
-	public Funcionario selectFuncionarioByUserName(Connection conn, String usuarioFuncionarioP) {
+	public Funcionario selectFuncionarioByUserName(String usuarioFuncionarioP) {
 		Funcionario resultado = null;
 		
 		String sql = "SELECT * FROM funcionarios WHERE usuario_funcionario=?;";
@@ -132,22 +138,34 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		}
 	}
 	
-	public void verificarTabelas(Connection conn) {
+	public void verificarTabelas() {
 		try {
 			ArrayList<String> tabelas = new ArrayList<String>();
 			DatabaseMetaData metaData = conn.getMetaData();
-			ResultSet rs = metaData.getTables("banco_de_dados.db", null, "%", null);
+			ResultSet rs = metaData.getTables(null, null, null, new String[] {"TABLE"});
 			while (rs.next()) {
 				tabelas.add(rs.getString(3));
 			}
 			
-			if (!tabelas.contains("funcionarios")) {
-				criarTabelas(conn);
+			if (!tabelas.contains(TABLE_NAME)) {
+				criarTabelas();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
+	
+	public boolean verificarLogin(String login, String senha) {
+		//recebe login e senha e verifica no banco de dados
+		//retorno true caso encontre e false caso não encontre
+		Funcionario funcionarioDoBanco = selectFuncionarioByUserName(login);
+		
+		if ( (login.equals(funcionarioDoBanco.getUsuarioFuncionario()) && 
+				(senha.equals(funcionarioDoBanco.getSenha())) )) {
+			return true;
+		}
+		
+		return false;
+	}
 }
