@@ -1,4 +1,4 @@
-package br.ufal.db;
+package br.ufal.persistencia;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -11,7 +11,15 @@ import java.util.List;
 
 import br.ufal.model.Funcionario;
 
-public class FuncionarioDB implements IFuncionarioDb{
+public class FuncionarioDAO implements IFuncionarioDAO{
+	
+	//nomes das colunas como estão escritas no banco de dados
+	private final String CODIGO_FUNCIONARIO = "codigo_funcionario";
+	private final String NOME_FUNCIONARIO = "nome_funcionario";
+	private final String USUARIO_FUNCIONARIO = "usuario_funcionario";
+	private final String ENDERECO_FUNCIONARIO = "endereco_funcionario";
+	private final String EMAIL = "email";
+	private final String SENHA = "senha";
 	
 	public void criarTabelas(Connection conn) {
 		String tabelaFuncionarios = "CREATE TABLE `funcionarios` (\n" + 
@@ -73,12 +81,12 @@ public class FuncionarioDB implements IFuncionarioDb{
 			ResultSet rs = preStmt.executeQuery();
 			
 			while(rs.next()) {
-				int codigoFuncionario = rs.getInt("codigo_funcionario");
-				String nomeFuncionario = rs.getString("nome_funcionario");
-				String usuarioFuncionario = rs.getString("usuario_funcionario");
-				String enderecoFuncionario = rs.getString("endereco_funcionario");
-				String email = rs.getString("email");
-				String senha = rs.getString("senha");
+				int codigoFuncionario = rs.getInt(CODIGO_FUNCIONARIO);
+				String nomeFuncionario = rs.getString(NOME_FUNCIONARIO);
+				String usuarioFuncionario = rs.getString(USUARIO_FUNCIONARIO);
+				String enderecoFuncionario = rs.getString(ENDERECO_FUNCIONARIO);
+				String email = rs.getString(EMAIL);
+				String senha = rs.getString(SENHA);
 				
 				resultado = new Funcionario(codigoFuncionario, nomeFuncionario, usuarioFuncionario, 
 						enderecoFuncionario, email, senha);

@@ -1,4 +1,4 @@
-package br.ufal.db;
+package br.ufal.persistencia;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import br.ufal.model.Lanche;
 
-public class LanchesDb {
+public class LanchesDAO {
 	
 	public static void criarTabela(Connection conn) {
 		//Criar tabela lanches no banco de dados
