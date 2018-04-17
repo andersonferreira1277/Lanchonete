@@ -1,6 +1,6 @@
 package br.ufal.model;
 
-import br.ufal.db.FuncionarioDB;
+import br.ufal.persistencia.FuncionarioDAO;
 
 public class Funcionario {
 	

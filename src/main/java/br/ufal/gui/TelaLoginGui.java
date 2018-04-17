@@ -1,13 +1,11 @@
 package br.ufal.gui;
 
-import br.ufal.db.FuncionarioDB;
-import br.ufal.db.LanchoneteDb;
-import br.ufal.db.LanchoneteSqLIte;
 import br.ufal.model.Funcionario;
 import br.ufal.model.Hash256;
+import br.ufal.persistencia.FuncionarioDAO;
+import br.ufal.persistencia.LanchoneteDAO;
+import br.ufal.persistencia.LanchoneteSqLIteDAO;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -46,9 +44,9 @@ public class TelaLoginGui extends Application{
 	
 	public void verificarBanco() {
 		//Verificar existencia da tabela
-		LanchoneteSqLIte lanchoneteSqLIte = LanchoneteSqLIte.getInstance();
-		LanchoneteDb lanchoneteDb = new LanchoneteDb();
-		FuncionarioDB funcionarioDB = new FuncionarioDB();
+		LanchoneteSqLIteDAO lanchoneteSqLIte = LanchoneteSqLIteDAO.getInstance();
+		LanchoneteDAO lanchoneteDb = new LanchoneteDAO();
+		FuncionarioDAO funcionarioDB = new FuncionarioDAO();
 		
 		//Verificando existencia de tabelas
 		lanchoneteDb.verificarTabelas(lanchoneteSqLIte.getConnection(), funcionarioDB);
@@ -59,8 +57,8 @@ public class TelaLoginGui extends Application{
 		String usuario = textFieldUsuario.getText();
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		
-		FuncionarioDB funcionarioDB = new FuncionarioDB();
-		LanchoneteSqLIte lanchoneteSqLIte = LanchoneteSqLIte.getInstance();
+		FuncionarioDAO funcionarioDB = new FuncionarioDAO();
+		LanchoneteSqLIteDAO lanchoneteSqLIte = LanchoneteSqLIteDAO.getInstance();
 		
 		Funcionario usuarioAtual = funcionarioDB.selectFuncionarioByUserName(lanchoneteSqLIte.getConnection(),
 				textFieldUsuario.getText());

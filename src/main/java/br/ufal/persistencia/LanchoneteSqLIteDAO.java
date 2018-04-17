@@ -1,16 +1,16 @@
-package br.ufal.db;
+package br.ufal.persistencia;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class LanchoneteSqLIte{
+public class LanchoneteSqLIteDAO{
 	
 	private static String url = "jdbc:sqlite:banco_de_dados.db";
 	private Connection conn;
-	private static LanchoneteSqLIte instance = new LanchoneteSqLIte();
+	private static LanchoneteSqLIteDAO instance = new LanchoneteSqLIteDAO();
 	
-	private LanchoneteSqLIte() {
+	private LanchoneteSqLIteDAO() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
@@ -21,7 +21,7 @@ public class LanchoneteSqLIte{
 		}
 	}
 	
-	public static LanchoneteSqLIte getInstance() {
+	public static LanchoneteSqLIteDAO getInstance() {
 		return instance;
 	}
 	

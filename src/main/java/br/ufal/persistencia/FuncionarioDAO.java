@@ -1,4 +1,4 @@
-package br.ufal.db;
+package br.ufal.persistencia;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import br.ufal.model.Funcionario;
 
-public class FuncionarioDB implements IFuncionarioDb{
+public class FuncionarioDAO implements IFuncionarioDAO{
 	
 	public void criarTabelas(Connection conn) {
 		String tabelaFuncionarios = "CREATE TABLE `funcionarios` (\n" + 
