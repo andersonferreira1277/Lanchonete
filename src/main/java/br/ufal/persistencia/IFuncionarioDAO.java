@@ -6,10 +6,10 @@ import java.util.List;
 import br.ufal.model.Funcionario;
 
 public interface IFuncionarioDAO {
-	public void criarTabelas(Connection conn);
-	public void insert(Connection conn, Funcionario funcionario);
+	public void criarTabelas();
+	public void insert(Funcionario funcionario);
 	public <E> List<E> select(String nomeFuncionario);
-	public Funcionario selectFuncionarioByUserName(Connection conn, String usuarioFuncionario);
+	public Funcionario selectFuncionarioByUserName(String usuarioFuncionario);
 	public void update();
 	public void delete();
 }
