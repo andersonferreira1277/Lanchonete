@@ -5,22 +5,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class LanchoneteDb {
+	//Classe para verificar existencia de tabelas, caso não exista cria as tabelas
 	
-	private static Connection conn;
-	
-	public LanchoneteDb(Connection conn) {
-		this.conn = conn;
+	public static void verificarTabelas (Connection conn, FuncionarioDB funcionarioDB) {
+		//Verifica se existe as tabelas no banco de dados
+		funcionarioDB.verificarTabelas(conn);
 	}
 	
-	public static Connection getConnection() {
-		return conn;
-	}
-	
-	public void verificarTabelas () {
-		
-	}
-	
-	public void criarTabelas () {
-		Lanches.criarTabela();
-	}
 }
