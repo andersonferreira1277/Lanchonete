@@ -33,7 +33,6 @@ public class TelaLoginGui extends Application{
 		loader.setLocation(getClass().getResource("views/TelaLoginGuiView.fxml"));
 		root = (VBox) loader.load();
 		
-		verificarBanco();
 		
 		cena = new Scene(root);
 		
@@ -43,15 +42,6 @@ public class TelaLoginGui extends Application{
 		primaryStage.show();
 	}
 	
-	public void verificarBanco() {
-		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
-		LanchoneteDAO lanchoneteDb = new LanchoneteDAO();
-		FuncionarioDAO funcionarioDB = new FuncionarioDAO(hsqldbJdbc.getConnection());
-		
-		//Verificando existencia de tabelas no banco de dados
-		lanchoneteDb.verificarTabelas(funcionarioDB);
-	}
 	
 	@FXML
 	public void fazerLogin() {
