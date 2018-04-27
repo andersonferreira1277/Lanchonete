@@ -12,9 +12,9 @@ public class Funcionario {
 	private String senha;
 	
 
-	public Funcionario(int codigoFuncionario, String nomeFuncionario, String usuarioFuncionario,
+	public Funcionario(String nomeFuncionario, String usuarioFuncionario,
 			String enderecoFuncionario, String email, String senha) {
-		this.codigoFuncionario = codigoFuncionario;
+		//this.codigoFuncionario = codigoFuncionario;
 		this.nomeFuncionario = nomeFuncionario;
 		this.usuarioFuncionario = usuarioFuncionario;
 		this.enderecoFuncionario = enderecoFuncionario;
