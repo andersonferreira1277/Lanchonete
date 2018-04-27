@@ -1,10 +1,11 @@
 package br.ufal.gui;
 
-import br.ufal.model.Funcionario;
+import javax.swing.JOptionPane;
+
 import br.ufal.model.Hash256;
 import br.ufal.persistencia.FuncionarioDAO;
+import br.ufal.persistencia.HsqldbJdbc;
 import br.ufal.persistencia.LanchoneteDAO;
-import br.ufal.persistencia.LanchoneteSqLIteDAO;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +31,8 @@ public class TelaLoginGui extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("views/TelaLoginGuiView.fxml"));
-		root = loader.load();
+		root = (VBox) loader.load();
 		
-		verificarBanco();
 		
 		cena = new Scene(root);
 		
@@ -42,28 +42,18 @@ public class TelaLoginGui extends Application{
 		primaryStage.show();
 	}
 	
-	public void verificarBanco() {
-		//Verificar existencia da tabela
-		LanchoneteSqLIteDAO lanchoneteSqLIte = LanchoneteSqLIteDAO.getInstance();
-		LanchoneteDAO lanchoneteDb = new LanchoneteDAO();
-		FuncionarioDAO funcionarioDB = new FuncionarioDAO();
-		
-		//Verificando existencia de tabelas
-		lanchoneteDb.verificarTabelas(lanchoneteSqLIte.getConnection(), funcionarioDB);
-	}
 	
 	@FXML
 	public void fazerLogin() {
 		String usuario = textFieldUsuario.getText();
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		
-		FuncionarioDAO funcionarioDB = new FuncionarioDAO();
-		LanchoneteSqLIteDAO lanchoneteSqLIte = LanchoneteSqLIteDAO.getInstance();
+		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
 		
-		Funcionario usuarioAtual = funcionarioDB.selectFuncionarioByUserName(lanchoneteSqLIte.getConnection(),
-				textFieldUsuario.getText());
+		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(hsqldbJdbc.getConnection());
 		
-		if ((!(usuarioAtual == null)) && (usuarioAtual.getSenha().equals(senha))) {
+		
+		if (funcionarioDAO.verificarLogin(usuario, senha)) {
 				//Acesso concedido, abrindo janela principal
 				
 				TelaPrincipalGui telaPrincipalGui = new TelaPrincipalGui();
@@ -79,6 +69,11 @@ public class TelaLoginGui extends Application{
 				}
 		} else {
 			//acesso negado
+			textFieldUsuario.setText("");
+			textFieldSenha.setText("");//zerando os compos de login e senha
+			
+			JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorreto(s)", 
+					"Usuário e/ou senha incorreto(s)", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
