@@ -14,7 +14,15 @@ public class Funcionario {
 
 	public Funcionario(String nomeFuncionario, String usuarioFuncionario,
 			String enderecoFuncionario, String email, String senha) {
-		//this.codigoFuncionario = codigoFuncionario;
+		
+		this.codigoFuncionario = 0;
+		new Funcionario(codigoFuncionario, nomeFuncionario, usuarioFuncionario, enderecoFuncionario, email, senha);
+	}
+	
+	public Funcionario(int codigoFuncionario, String nomeFuncionario, String usuarioFuncionario,
+			String enderecoFuncionario, String email, String senha) {
+		
+		this.codigoFuncionario = codigoFuncionario;
 		this.nomeFuncionario = nomeFuncionario;
 		this.usuarioFuncionario = usuarioFuncionario;
 		this.enderecoFuncionario = enderecoFuncionario;
