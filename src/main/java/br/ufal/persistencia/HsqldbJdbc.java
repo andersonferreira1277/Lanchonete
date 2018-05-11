@@ -9,8 +9,7 @@ public class HsqldbJdbc {
 	private static String url = "jdbc:hsqldb:file:baseDeDados/db";
 	private static String login = "admin";
 	private static String senha = "6tr!MFYY";
-	private Connection conn;
-	private static HsqldbJdbc instance = new HsqldbJdbc();
+	private static Connection conn;
 	
 	private HsqldbJdbc() {
 		try {
@@ -21,14 +20,26 @@ public class HsqldbJdbc {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
-	public static HsqldbJdbc getInstance() {
-		return instance;
-	}
 	
-	public Connection getConnection() {
+	public static Connection getConnection() {
+		if (conn == null) {
+			new HsqldbJdbc();
+		}
 		return conn;
+	}
+	
+	public void close() {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

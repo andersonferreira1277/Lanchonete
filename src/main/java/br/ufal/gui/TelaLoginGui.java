@@ -45,9 +45,8 @@ public class TelaLoginGui extends Application{
 	
 	public void verificarBanco() {
 		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
 		LanchoneteDAO lanchoneteDb = new LanchoneteDAO();
-		FuncionarioDAO funcionarioDB = new FuncionarioDAO(hsqldbJdbc.getConnection());
+		FuncionarioDAO funcionarioDB = new FuncionarioDAO(HsqldbJdbc.getConnection());
 		
 		//Verificando existencia de tabelas no banco de dados
 		lanchoneteDb.verificarTabelas(funcionarioDB);
@@ -58,9 +57,8 @@ public class TelaLoginGui extends Application{
 		String usuario = textFieldUsuario.getText();
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
 		
-		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(hsqldbJdbc.getConnection());
+		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(HsqldbJdbc.getConnection());
 		
 		
 		if (funcionarioDAO.verificarLogin(usuario, senha)) {
