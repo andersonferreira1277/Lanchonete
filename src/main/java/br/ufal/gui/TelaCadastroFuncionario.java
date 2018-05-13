@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,7 +20,7 @@ public class TelaCadastroFuncionario extends Application{
 	
 	private Scene cena;
 	@FXML
-	private VBox root;
+	private GridPane root;
 	@FXML
 	private TextField textFieldFuncionario;
 	@FXML
@@ -41,14 +42,14 @@ public class TelaCadastroFuncionario extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("views/TelaCadastroFuncionario.fxml"));
-		root = (VBox) loader.load();
+		root = (GridPane) loader.load();
 		
 		
 		cena = new Scene(root);
 		
 		primaryStage.setResizable(false);
 		primaryStage.setScene(cena);
-		primaryStage.setTitle("Cadastro de Funcionário");
+		primaryStage.setTitle("Cadastro de Funcionï¿½rio");
 		primaryStage.show();
 	}
 	public void cadastrarFuncionario(){
@@ -63,10 +64,10 @@ public class TelaCadastroFuncionario extends Application{
 		
 		Funcionario funcionario = new Funcionario(nomeFuncionario, usuario, endereco, email, senha);
 		
-		FuncionarioDAO g = new FuncionarioDAO(conn);
-		g.insert(funcionario);
+		/*FuncionarioDAO g = new FuncionarioDAO(conn);
+		g.insert(funcionario);*/
 		
-	//falta botões
+	//falta botï¿½es
 	}
 	public void cadastrarFuncionarioDAO(){
 		
