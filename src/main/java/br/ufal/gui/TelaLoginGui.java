@@ -3,6 +3,7 @@ package br.ufal.gui;
 import javax.swing.JOptionPane;
 
 import br.ufal.model.Hash256;
+import br.ufal.persistencia.ConnectDB;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
 import br.ufal.persistencia.LanchoneteDAO;
@@ -33,8 +34,6 @@ public class TelaLoginGui extends Application{
 		loader.setLocation(getClass().getResource("views/TelaLoginGuiView.fxml"));
 		root = (VBox) loader.load();
 		
-		verificarBanco();
-		
 		cena = new Scene(root);
 		
 		primaryStage.setResizable(false);
@@ -43,24 +42,13 @@ public class TelaLoginGui extends Application{
 		primaryStage.show();
 	}
 	
-	public void verificarBanco() {
-		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
-		LanchoneteDAO lanchoneteDb = new LanchoneteDAO();
-		FuncionarioDAO funcionarioDB = new FuncionarioDAO(hsqldbJdbc.getConnection());
-		
-		//Verificando existencia de tabelas no banco de dados
-		lanchoneteDb.verificarTabelas(funcionarioDB);
-	}
-	
 	@FXML
 	public void fazerLogin() {
 		String usuario = textFieldUsuario.getText();
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
 		
-		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(hsqldbJdbc.getConnection());
+		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
 		
 		
 		if (funcionarioDAO.verificarLogin(usuario, senha)) {
@@ -72,7 +60,6 @@ public class TelaLoginGui extends Application{
 					telaPrincipalGui.start(primaryStage);
 					Stage stageAtual = (Stage) textFieldUsuario.getScene().getWindow();
 					stageAtual.close();
-					System.out.println(root);
 				} catch (Exception e) {
 					
 					e.printStackTrace();
