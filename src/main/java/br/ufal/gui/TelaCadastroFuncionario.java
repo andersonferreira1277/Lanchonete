@@ -1,23 +1,35 @@
 package br.ufal.gui;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.ResourceBundle;
+
 import javax.swing.JOptionPane;
 
 import br.ufal.model.Funcionario;
 import br.ufal.model.Hash256;
 import br.ufal.persistencia.FuncionarioDAO;
+import br.ufal.persistencia.HsqldbJdbc;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
-public class TelaCadastroFuncionario extends Application{
-	
+public class TelaCadastroFuncionario extends GridPane implements Initializable{
+
+	private Application app;
+
 	private Scene cena;
 	@FXML
 	private GridPane root;
@@ -30,6 +42,8 @@ public class TelaCadastroFuncionario extends Application{
 	@FXML
 	private TextField textFieldSenhaRepetida;
 	@FXML
+	private ComboBox<String> comboBox;
+	@FXML
 	private TextField textFieldEmail;
 	@FXML
 	private TextField textFieldEndereco;
@@ -38,46 +52,66 @@ public class TelaCadastroFuncionario extends Application{
 	@FXML
 	private Button btnFechar;
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("views/TelaCadastroFuncionario.fxml"));
-		root = (GridPane) loader.load();
-		
-		
-		cena = new Scene(root);
-		
-		primaryStage.setResizable(false);
-		primaryStage.setScene(cena);
-		primaryStage.setTitle("Cadastro de Funcion�rio");
-		primaryStage.show();
+	public TelaCadastroFuncionario(Application app) {
+		this.app = app;
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("views/TelaCadastroFuncionario.fxml"));
+		loader.setRoot(this);
+		loader.setController(this);
+		try {
+			loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
+	@FXML
 	public void cadastrarFuncionario(){
 		String nomeFuncionario = textFieldFuncionario.getText();
 		String usuario = textFieldUsuario.getText();
-		
+
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		String repetirSenha = Hash256.gerarHash(textFieldSenhaRepetida.getText());
-		
+
 		String email = textFieldEmail.getText();
 		String endereco = textFieldEndereco.getText();
-		
-		Funcionario funcionario = new Funcionario(nomeFuncionario, usuario, endereco, email, senha);
-		
-		/*FuncionarioDAO g = new FuncionarioDAO(conn);
-		g.insert(funcionario);*/
-		
-	//falta bot�es
+
+		if (senha.equals(repetirSenha)) {
+			Funcionario funcionario = new Funcionario(nomeFuncionario, usuario, endereco, email, senha);
+			FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
+			funcionarioDAO.insert(funcionario);
+
+			JOptionPane.showMessageDialog(null, "Cadastrado", "Informação", JOptionPane.INFORMATION_MESSAGE);
+			if (app instanceof PrimeiraTelaDeCadastro) {
+				Stage stage = new Stage();
+				TelaLoginGui teGui = new TelaLoginGui();
+				try {
+					teGui.start(stage);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Stage atual = (Stage) this.getScene().getWindow();
+				atual.close();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "As senhas digitadas não coincidem", "Informação", JOptionPane.WARNING_MESSAGE);
+		}
+
+
 	}
 	public void cadastrarFuncionarioDAO(){
-		
+
 	}
-	
-	
-	
-	public static void main(String[] args) {
-		launch(args);
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+
+		ObservableList<String> list = FXCollections.observableArrayList("Gerente", "Funcionário", "Cozinheiro");
+		comboBox.setItems(list);
 	}
-	
+
 
 }

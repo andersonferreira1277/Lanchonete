@@ -15,8 +15,7 @@ public class Funcionario {
 	public Funcionario(String nomeFuncionario, String usuarioFuncionario,
 			String enderecoFuncionario, String email, String senha) {
 		
-		this.codigoFuncionario = 0;
-		new Funcionario(codigoFuncionario, nomeFuncionario, usuarioFuncionario, enderecoFuncionario, email, senha);
+		this(0, nomeFuncionario, usuarioFuncionario, enderecoFuncionario, email, senha);
 	}
 	
 	public Funcionario(int codigoFuncionario, String nomeFuncionario, String usuarioFuncionario,

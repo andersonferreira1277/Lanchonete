@@ -12,6 +12,7 @@ import br.ufal.model.Cardapio;
 import br.ufal.model.Hash256;
 import br.ufal.persistencia.HsqldbJdbc;
 import br.ufal.persistencia.CardapioDAO;
+import br.ufal.persistencia.ConnectDB;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,9 +52,9 @@ public class TelaCardapio extends Application{
 	
 	public void verificarBanco() {
 		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
+		ConnectDB sgbd = new HsqldbJdbc();
 		CardapioDAO cardapioDb = new CardapioDAO(null);
-		CardapioDAO lanchoneteDB = new CardapioDAO(hsqldbJdbc.getConnection());
+		CardapioDAO lanchoneteDB = new CardapioDAO(sgbd.getConnection());
 		
 		//Verificando existencia de tabelas no banco de dados
 		lanchoneteDB.verificarTabelas();
@@ -72,7 +73,7 @@ public class TelaCardapio extends Application{
 		
 		tabela.setItems(dados);
 		
-		TableColumn<Cardapio, Integer> colunaCodigo = new TableColumn<>("Código");
+		TableColumn<Cardapio, Integer> colunaCodigo = new TableColumn<>("Cï¿½digo");
 		colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo_item"));
 		tabela.getColumns().add(colunaCodigo);
 		
@@ -93,7 +94,7 @@ public class TelaCardapio extends Application{
 		String usuario = textFieldUsuario.getText();
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
+		HsqldbJdbc hsqldbJdbc = new HsqldbJdbc();
 		
 		
 		
