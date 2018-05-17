@@ -20,4 +20,5 @@ public class Hash256 {
 		
 		return hex;
 	}
+	
 }

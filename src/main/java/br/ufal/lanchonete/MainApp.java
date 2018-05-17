@@ -3,6 +3,7 @@ package br.ufal.lanchonete;
 import br.ufal.gui.PrimeiraTelaDeCadastro;
 import br.ufal.gui.TelaLoginGui;
 import br.ufal.gui.TelaPrincipalGui;
+import br.ufal.model.Hash256;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
 import javafx.application.Application;
