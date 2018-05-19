@@ -27,7 +27,7 @@
                                     <Label layoutX="24.0" layoutY="135.0" prefHeight="17.0" prefWidth="537.0" text="clicar no botão que gera automaticamente essa informação. Mas se quiser fazer alguma alteração" />
                                     <ImageView fitHeight="97.0" fitWidth="157.0" layoutX="454.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../../../../../../../Pictures/rvlanches.JPG" />
+                                          <Image url="@../../imagens/rvlanches.JPG" />
                                        </image>
                                     </ImageView>
                                     <Label layoutX="27.0" layoutY="160.0" prefHeight="17.0" prefWidth="529.0" text="no seu cardápio é só clicar em outro botão e escolher sus mudanças. " />
@@ -47,7 +47,7 @@
                                     <Button layoutX="21.0" layoutY="310.0" mnemonicParsing="false" text="Alterar Item" />
                                     <ImageView fitHeight="104.0" fitWidth="152.0" layoutX="445.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../../../../../../../Pictures/rvlanches.JPG" />
+                                          <Image url="@../../imagens/rvlanches.JPG" />
                                        </image>
                                     </ImageView>
                                  </children>
@@ -63,7 +63,7 @@
                                     <Button layoutX="57.0" layoutY="185.0" mnemonicParsing="false" text="Gerar Lista de Compras" />
                                     <ImageView fitHeight="100.0" fitWidth="138.0" layoutX="448.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../../../../../../../Pictures/rvlanches.JPG" />
+                                          <Image url="@../../imagens/rvlanches.JPG" />
                                        </image>
                                     </ImageView>
                                  </children>
@@ -78,7 +78,7 @@
                                     <Button layoutX="54.0" layoutY="103.0" mnemonicParsing="false" text="Total de Vendas por Mês" />
                                     <ImageView fitHeight="101.0" fitWidth="141.0" layoutX="445.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../../../../../../../Pictures/rvlanches.JPG" />
+                                          <Image url="@../../imagens/rvlanches.JPG" />
                                        </image>
                                     </ImageView>
                                  </children>
