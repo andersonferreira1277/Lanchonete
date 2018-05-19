@@ -1,22 +1,27 @@
 package br.ufal.gui;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javax.swing.JOptionPane;
 
 import br.ufal.model.Hash256;
-import br.ufal.persistencia.ConnectDB;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
-import br.ufal.persistencia.LanchoneteDAO;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class TelaLoginGui extends Application{
+public class TelaLoginGui extends Application implements Initializable{
 	
 	private Scene cena;
 	@FXML
@@ -27,6 +32,8 @@ public class TelaLoginGui extends Application{
 	private TextField textFieldSenha;
 	@FXML
 	private Button btnEntrar;
+	@FXML
+	private ImageView imagem;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -76,6 +83,15 @@ public class TelaLoginGui extends Application{
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		File file = new File("imagens/lanchonete.png");
+		Image img = new Image(file.toURI().toString());
+		imagem.setImage(img);
+		
 	}
 	
 
