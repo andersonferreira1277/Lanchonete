@@ -2,7 +2,6 @@ package br.ufal.gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -17,12 +16,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -32,26 +29,52 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 
 	@FXML
 	private GridPane root;
+	
 	@FXML
 	private TextField textFieldFuncionario;
+	
 	@FXML
 	private TextField textFieldUsuario;
+	
 	@FXML
 	private TextField textFieldSenha;
+	
 	@FXML
 	private TextField textFieldSenhaRepetida;
+	
 	@FXML
 	private ComboBox<String> comboBox;
+	
 	@FXML
 	private TextField textFieldEmail;
+	
 	@FXML
 	private TextField textFieldEndereco;
+	
 	@FXML
 	private Button btnCadastrar;
+	
 	@FXML
 	private Button btnFechar;
 
+	private Funcionario funcionario;	
+
+	/**
+	 * Constroi a tela de cadastros de funcionarios
+	 * @param app é referência para aplicação que está usando está tela.
+	 */
 	public TelaCadastroFuncionario(Application app) {
+		this(app, null);
+	}
+
+	/**
+	 * Constroi a tela de cadastros de funcionarios com as infromações de funcionário
+	 * @param app é referência para aplicação que está usando está tela.
+	 * @param f
+	 */
+	public TelaCadastroFuncionario(Application app, Funcionario f) {
+		
+		this.funcionario = f;
 		this.app = app;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("views/TelaCadastroFuncionario.fxml"));
 		loader.setRoot(this);
@@ -62,22 +85,23 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	@FXML
 	public void cadastrarFuncionario(){
-		
+
 		String nomeFuncionario = textFieldFuncionario.getText();
-		
+
 		String usuario = textFieldUsuario.getText();
-		
+
 		String cargo = comboBox.getValue();
 
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		String repetirSenha = Hash256.gerarHash(textFieldSenhaRepetida.getText());
 
 		String email = textFieldEmail.getText();
-		
+
 		String endereco = textFieldEndereco.getText();
 
 		if (senha.equals(repetirSenha) && cargo != null && !nomeFuncionario.isEmpty() && !usuario.isEmpty() && 
@@ -109,13 +133,13 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 
 
 	}
-	
+
 	/**
 	 * Fecha a janela de cadastro
 	 */
 	@FXML
 	public void fechar() {
-		
+
 		Stage stage = (Stage) this.getScene().getWindow();
 		stage.close();
 	}
@@ -126,6 +150,30 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 
 		ObservableList<String> list = FXCollections.observableArrayList("Gerente", "Funcionário", "Cozinheiro");
 		comboBox.setItems(list);
+		
+		if (funcionario != null) {
+			carregarFuncionario();
+		}
+	}
+
+	public void carregarFuncionario() {
+		
+		btnCadastrar.setText("Salvar modificções");
+		
+		textFieldFuncionario.setText(funcionario.getNomeFuncionario());
+
+		textFieldUsuario.setText(funcionario.getUsuarioFuncionario());
+
+		comboBox.setValue(funcionario.getCargo());
+
+		textFieldSenha.setText(funcionario.getSenha());
+		textFieldSenhaRepetida.setText(funcionario.getSenha());
+
+		textFieldEmail.setText(funcionario.getEmail());
+
+		textFieldEndereco.setText(funcionario.getEnderecoFuncionario());
+		
+		JOptionPane.showMessageDialog(null, "Digite uma nova senha para o Funcionário", "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 

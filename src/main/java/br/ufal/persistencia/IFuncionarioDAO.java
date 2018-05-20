@@ -11,5 +11,5 @@ public interface IFuncionarioDAO {
 	public List<Funcionario> selectListaDeFuncionarios();
 	public Funcionario selectFuncionarioByUserName(String usuarioFuncionario);
 	public void update();
-	public void delete();
+	public void apagarFuncionario(Funcionario f);
 }

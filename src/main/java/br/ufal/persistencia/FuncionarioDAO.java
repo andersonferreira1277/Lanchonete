@@ -206,10 +206,24 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		// TODO Auto-generated method stub
 
 	}
-
-	public void delete() {
-		// TODO Auto-generated method stub
-
+	
+	/**
+	 * Apaga um Funcionário do banco de dados
+	 * @param Recebe o funcionário que será apagado
+	 */
+	public void apagarFuncionario(Funcionario f) {
+		
+		String sql = "DELETE FROM "+TABLE_NAME+"\n" + 
+				"WHERE "+CODIGO_FUNCIONARIO+"=?;";
+		
+		try (Connection conn = sgbd.getConnection();
+				PreparedStatement pStatement = conn.prepareStatement(sql);) {
+			
+			pStatement.setInt(1, f.getCodigoFuncionario());
+			pStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 
