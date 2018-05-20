@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -61,10 +62,10 @@ public class TelaLoginGui extends Application implements Initializable{
 		if (funcionarioDAO.verificarLogin(usuario, senha)) {
 				//Acesso concedido, abrindo janela principal
 				
-				TelaPrincipalGui telaPrincipalGui = new TelaPrincipalGui();
-				Stage primaryStage = new Stage();
+				InicioGeral iGeral = new InicioGeral(new AdministradorGUI());
+				Stage newStage = new Stage();
 				try {
-					telaPrincipalGui.start(primaryStage);
+					iGeral.start(newStage);
 					Stage stageAtual = (Stage) textFieldUsuario.getScene().getWindow();
 					stageAtual.close();
 				} catch (Exception e) {

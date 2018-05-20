@@ -30,7 +30,6 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 
 	private Application app;
 
-	private Scene cena;
 	@FXML
 	private GridPane root;
 	@FXML
@@ -67,17 +66,23 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 
 	@FXML
 	public void cadastrarFuncionario(){
+		
 		String nomeFuncionario = textFieldFuncionario.getText();
+		
 		String usuario = textFieldUsuario.getText();
+		
+		String cargo = comboBox.getValue();
 
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		String repetirSenha = Hash256.gerarHash(textFieldSenhaRepetida.getText());
 
 		String email = textFieldEmail.getText();
+		
 		String endereco = textFieldEndereco.getText();
 
-		if (senha.equals(repetirSenha)) {
-			Funcionario funcionario = new Funcionario(nomeFuncionario, usuario, endereco, email, senha);
+		if (senha.equals(repetirSenha) && cargo != null && !nomeFuncionario.isEmpty() && !usuario.isEmpty() && 
+				!email.isEmpty() && !endereco.isEmpty()) {
+			Funcionario funcionario = new Funcionario(nomeFuncionario, usuario, cargo, endereco, email, senha);
 			FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
 			funcionarioDAO.insert(funcionario);
 
@@ -93,17 +98,27 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 				}
 				Stage atual = (Stage) this.getScene().getWindow();
 				atual.close();
+			} else {
+				Stage stage = (Stage) this.getScene().getWindow();
+				stage.close();
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "As senhas digitadas não coincidem", "Informação", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "As senhas digitadas não coincidem.\n"
+					+ "E/Ou algum campo está em Branco.", "Informação", JOptionPane.WARNING_MESSAGE);
 		}
 
 
 	}
-	public void cadastrarFuncionarioDAO(){
-
+	
+	/**
+	 * Fecha a janela de cadastro
+	 */
+	@FXML
+	public void fechar() {
+		
+		Stage stage = (Stage) this.getScene().getWindow();
+		stage.close();
 	}
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
