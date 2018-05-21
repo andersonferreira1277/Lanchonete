@@ -95,6 +95,7 @@ public class AdministradorGUI extends TabPane implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	@FXML
@@ -141,7 +142,6 @@ public class AdministradorGUI extends TabPane implements Initializable{
 
 				ObservableList<Funcionario> value = ((ObservableList<Funcionario>) event.getSource().getValue());
 				ObservableList<Funcionario> value2 = tableFuncionarios.getItems();
-
 
 				if (!(value.size() == value2.size())) {
 					oFuncionarios.removeAll(oFuncionarios);

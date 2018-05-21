@@ -13,6 +13,8 @@ import br.ufal.persistencia.HsqldbJdbc;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -57,7 +59,7 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 	@FXML
 	private Button btnFechar;
 
-	private Funcionario funcionario;	
+	private Funcionario funcionarioDaClasse;	
 
 	/**
 	 * Constroi a tela de cadastros de funcionarios
@@ -74,7 +76,7 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 	 */
 	public TelaCadastroFuncionario(Application app, Funcionario f) {
 		
-		this.funcionario = f;
+		this.funcionarioDaClasse = f;
 		this.app = app;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("views/TelaCadastroFuncionario.fxml"));
 		loader.setRoot(this);
@@ -151,29 +153,80 @@ public class TelaCadastroFuncionario extends GridPane implements Initializable{
 		ObservableList<String> list = FXCollections.observableArrayList("Gerente", "Funcionário", "Cozinheiro");
 		comboBox.setItems(list);
 		
-		if (funcionario != null) {
+		if (funcionarioDaClasse != null) {
 			carregarFuncionario();
 		}
 	}
 
 	public void carregarFuncionario() {
 		
-		btnCadastrar.setText("Salvar modificções");
+		btnCadastrar.setText("Salvar modificações");
 		
-		textFieldFuncionario.setText(funcionario.getNomeFuncionario());
+		//modificando comportamento do button
+		btnCadastrar.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				
+				String nomeFuncionario = textFieldFuncionario.getText();
 
-		textFieldUsuario.setText(funcionario.getUsuarioFuncionario());
+				String usuario = textFieldUsuario.getText();
 
-		comboBox.setValue(funcionario.getCargo());
+				String cargo = comboBox.getValue();
 
-		textFieldSenha.setText(funcionario.getSenha());
-		textFieldSenhaRepetida.setText(funcionario.getSenha());
+				String senha = (textFieldSenha.getText().equals(funcionarioDaClasse.getSenha())) ? 
+						funcionarioDaClasse.getSenha(): Hash256.gerarHash(textFieldSenha.getText());
+				String repetirSenha = (textFieldSenha.getText().equals(funcionarioDaClasse.getSenha())) ? 
+						funcionarioDaClasse.getSenha(): Hash256.gerarHash(textFieldSenha.getText());
 
-		textFieldEmail.setText(funcionario.getEmail());
+				String email = textFieldEmail.getText();
 
-		textFieldEndereco.setText(funcionario.getEnderecoFuncionario());
+				String endereco = textFieldEndereco.getText();
+
+				if (senha.equals(repetirSenha) && cargo != null && !nomeFuncionario.isEmpty() && !usuario.isEmpty() && 
+						!email.isEmpty() && !endereco.isEmpty()) {
+					
+					Funcionario funcionario2 = new Funcionario(funcionarioDaClasse.getCodigoFuncionario(), 
+							nomeFuncionario, usuario, cargo, endereco, email, senha);
+					FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
+					funcionarioDAO.update(funcionario2);
+
+					JOptionPane.showMessageDialog(null, "Cadastrado", "Informação", JOptionPane.INFORMATION_MESSAGE);
+					if (app instanceof PrimeiraTelaDeCadastro) {
+						Stage stage = new Stage();
+						TelaLoginGui teGui = new TelaLoginGui();
+						try {
+							teGui.start(stage);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Stage atual = (Stage) btnCadastrar.getScene().getWindow();
+						atual.close();
+					} else {
+						Stage stage = (Stage) btnCadastrar.getScene().getWindow();
+						stage.close();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "As senhas digitadas não coincidem.\n"
+							+ "E/Ou algum campo está em Branco.", "Informação", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		
-		JOptionPane.showMessageDialog(null, "Digite uma nova senha para o Funcionário", "Informação", JOptionPane.INFORMATION_MESSAGE);
+		textFieldFuncionario.setText(funcionarioDaClasse.getNomeFuncionario());
+
+		textFieldUsuario.setText(funcionarioDaClasse.getUsuarioFuncionario());
+
+		comboBox.setValue(funcionarioDaClasse.getCargo());
+
+		textFieldSenha.setText(funcionarioDaClasse.getSenha());
+		textFieldSenhaRepetida.setText(funcionarioDaClasse.getSenha());
+
+		textFieldEmail.setText(funcionarioDaClasse.getEmail());
+
+		textFieldEndereco.setText(funcionarioDaClasse.getEnderecoFuncionario());
+		
 	}
 
 

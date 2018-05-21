@@ -15,7 +15,7 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 
 	//nomes das colunas como estão escritas no banco de dados
 	private static final String TABLE_NAME = "FUNCIONARIOS";
-	private static final String CODIGO_FUNCIONARIO = "codigo_funcionario";
+	private static final String CODIGO_FUNCIONARIO = "CODIGO_FUNCIONARIO";
 	private static final String NOME_FUNCIONARIO = "NOME_FUNCIONARIO";
 	private static final String USUARIO_FUNCIONARIO = "USUARIO_FUNCIONARIO";
 	private static final String CARGO_FUNCIONARIO = "CARGO_FUNCIONARIO";
@@ -202,23 +202,52 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		return resultado;
 	}
 
-	public void update() {
-		// TODO Auto-generated method stub
+	/**
+	 * Atualiza as informações de uma funcionario passado por paramêtro
+	 * @param f Recebe um funcionario existente no banco
+	 */
+	public void update(Funcionario f) {
 
+		String sql = "UPDATE "+TABLE_NAME+"\n" + 
+				"SET "+NOME_FUNCIONARIO+"=?,\n" + 
+				"	"+USUARIO_FUNCIONARIO+"=?,\n" + 
+				"	"+CARGO_FUNCIONARIO+"=?,\n" + 
+				"	"+ENDERECO_FUNCIONARIO+"=?,\n" + 
+				"	"+EMAIL+"=?,\n"+ 
+				"    "+SENHA+"=?" + 
+				"WHERE "+CODIGO_FUNCIONARIO+"=?;";
+
+		try (Connection conn = sgbd.getConnection();
+				PreparedStatement pStatement = conn.prepareStatement(sql);){
+
+			pStatement.setString( 1, f.getNomeFuncionario());
+			pStatement.setString(2, f.getUsuarioFuncionario());
+			pStatement.setString(3, f.getCargo());
+			pStatement.setString(4, f.getEnderecoFuncionario());
+			pStatement.setString(5, f.getEmail());
+			pStatement.setString(6, f.getSenha());
+			pStatement.setInt(7, f.getCodigoFuncionario());
+			
+			pStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * Apaga um Funcionário do banco de dados
 	 * @param Recebe o funcionário que será apagado
 	 */
 	public void apagarFuncionario(Funcionario f) {
-		
+
 		String sql = "DELETE FROM "+TABLE_NAME+"\n" + 
 				"WHERE "+CODIGO_FUNCIONARIO+"=?;";
-		
+
 		try (Connection conn = sgbd.getConnection();
 				PreparedStatement pStatement = conn.prepareStatement(sql);) {
-			
+
 			pStatement.setInt(1, f.getCodigoFuncionario());
 			pStatement.executeUpdate();
 		} catch (SQLException e) {
