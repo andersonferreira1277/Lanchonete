@@ -28,6 +28,30 @@ public class Funcionario {
 		this.email = email;
 		this.senha = senha;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj == null) {
+	        return false;
+	    }
+		if (!(obj instanceof Funcionario)) {
+			return false;
+		}
+		
+		final Funcionario other = (Funcionario) obj;
+	    if (!(this.getCodigoFuncionario() == other.getCodigoFuncionario()) || 
+	    		!(this.getUsuarioFuncionario().equals(other.getUsuarioFuncionario())) || 
+	    		!(this.getNomeFuncionario().equals(other.getNomeFuncionario()) ) ||
+	    		!(this.getCargo().equals(other.getCargo())) ||
+	    		!(this.getEnderecoFuncionario().equals(other.getEnderecoFuncionario())) || 
+	    		!(this.getEmail().equals(other.getEmail())) || 
+	    		!(this.getSenha().equals(other.getSenha()))	){
+	    	
+	        return false;
+	    }
+		return true;
+	}
 
 	public void cadastrarFuncionario () {
 		

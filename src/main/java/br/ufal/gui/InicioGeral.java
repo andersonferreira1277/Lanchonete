@@ -40,6 +40,7 @@ public class InicioGeral extends Application{
 		
 		primaryStage.setMinWidth(670);
 		primaryStage.setMinHeight(471);
+		primaryStage.setResizable(false);
 		primaryStage.setScene(cena);
 		primaryStage.setTitle("Lanchonete");
 		primaryStage.show();

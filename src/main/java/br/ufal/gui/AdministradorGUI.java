@@ -142,8 +142,8 @@ public class AdministradorGUI extends TabPane implements Initializable{
 
 				ObservableList<Funcionario> value = ((ObservableList<Funcionario>) event.getSource().getValue());
 				ObservableList<Funcionario> value2 = tableFuncionarios.getItems();
-
-				if (!(value.size() == value2.size())) {
+				
+				if (!(value.size() == value2.size()) || !value.equals(value2)) {
 					oFuncionarios.removeAll(oFuncionarios);
 					oFuncionarios.addAll(value);
 					tableFuncionarios.setItems(oFuncionarios);
