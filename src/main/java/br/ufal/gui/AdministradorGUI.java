@@ -5,11 +5,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import br.ufal.model.Funcionario;
+import br.ufal.model.Item;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +49,26 @@ public class AdministradorGUI extends TabPane implements Initializable{
 	private Button btnExcluir;
 
 	private ObservableList<Funcionario> oFuncionarios;
+	
+	//parte de Itens
+	
+	@FXML
+	private TableView<Item> tableCardapio;
+
+	@FXML
+	private TableColumn<Item, String> columnItemDescricao;
+
+	@FXML
+	private TableColumn<Item, Float> columnItemValor;
+
+	@FXML
+	private Button btnAdicionarItem;
+
+	@FXML
+	private Button btnAlterarItem;
+
+	@FXML
+	private Button btnExcluirItem;
 
 	public AdministradorGUI() {
 
@@ -153,6 +175,23 @@ public class AdministradorGUI extends TabPane implements Initializable{
 		});
 		atTabelaFuncionarios.start();
 	}
+	
+	@FXML
+	void adicionarItem(ActionEvent event) {
+
+	}
+
+	@FXML
+	void alterarItem(ActionEvent event) {
+
+	}
+
+
+	@FXML
+	void excluirItem(ActionEvent event) {
+
+	}
+
 
 
 }

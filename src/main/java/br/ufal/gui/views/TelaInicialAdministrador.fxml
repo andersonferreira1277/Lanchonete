@@ -92,17 +92,50 @@
       </Tab>
       <Tab text="   Cardápio   ">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="173.0" layoutY="310.0" mnemonicParsing="false" text="Adicionar Item" />
-                  <Button layoutX="21.0" layoutY="310.0" mnemonicParsing="false" text="Alterar Item" />
-                  <ImageView fitHeight="104.0" fitWidth="152.0" layoutX="445.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../imagens/rvlanches.JPG" />
-                     </image>
-                  </ImageView>
+                  <TableView fx:id="tableCardapio" prefHeight="418.0" prefWidth="481.0">
+                    <columns>
+                      <TableColumn fx:id="columnItemDescricao" prefWidth="395.0" text="Descriçao do item" />
+                      <TableColumn fx:id="columnItemValor" minWidth="0.0" prefWidth="84.0" text="Valor" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <VBox alignment="TOP_CENTER" prefHeight="433.0" prefWidth="168.0">
+                     <children>
+                        <Button fx:id="btnAdicionarItem" mnemonicParsing="false" onAction="#adicionarItem" text="Adicionar Item">
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="btnAlterarItem" mnemonicParsing="false" onAction="#alterarItem" text="Alterar Item">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="btnExcluirItem" mnemonicParsing="false" onAction="#excluirItem" text="Excluir Item">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Button>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="240.0" prefWidth="168.0">
+                           <children>
+                              <ImageView fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../imagens/rvlanches.JPG" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
                </children>
-            </AnchorPane>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
          </content>
       </Tab>
       <Tab text="   Estoque   ">
