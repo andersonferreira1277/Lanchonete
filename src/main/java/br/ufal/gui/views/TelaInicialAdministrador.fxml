@@ -46,9 +46,9 @@
                      <content>
                         <TableView fx:id="tableFuncionarios" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="560.0">
                            <columns>
-                              <TableColumn fx:id="columnId" prefWidth="75.0" text="Id" />
-                              <TableColumn fx:id="columnNome" prefWidth="293.0" text="Nome do Funcionarios" />
-                              <TableColumn fx:id="columnCargo" minWidth="0.0" prefWidth="107.0" text="Cargo" />
+                              <TableColumn fx:id="columnId" editable="false" prefWidth="75.0" sortable="false" text="Id" />
+                              <TableColumn fx:id="columnNome" editable="false" prefWidth="293.0" sortable="false" text="Nome do Funcionarios" />
+                              <TableColumn fx:id="columnCargo" editable="false" minWidth="0.0" prefWidth="107.0" sortable="false" text="Cargo" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -94,14 +94,17 @@
          <content>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="tableCardapio" prefHeight="418.0" prefWidth="481.0">
+                  <TableView fx:id="tableCardapio" minHeight="-Infinity" minWidth="-Infinity" prefHeight="367.0" prefWidth="481.0">
                     <columns>
-                      <TableColumn fx:id="columnItemDescricao" prefWidth="395.0" text="Descriçao do item" />
-                      <TableColumn fx:id="columnItemValor" minWidth="0.0" prefWidth="84.0" text="Valor" />
+                      <TableColumn fx:id="columnItemDescricao" prefWidth="372.0" text="Descriçao do item" />
+                      <TableColumn fx:id="columnItemValor" minWidth="0.0" prefWidth="107.0" text="Valor" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
+                     <HBox.margin>
+                        <Insets bottom="20.0" />
+                     </HBox.margin>
                   </TableView>
                   <VBox alignment="TOP_CENTER" prefHeight="433.0" prefWidth="168.0">
                      <children>
@@ -126,6 +129,9 @@
                                  <image>
                                     <Image url="@../../imagens/rvlanches.JPG" />
                                  </image>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
                               </ImageView>
                            </children>
                         </VBox>
@@ -133,7 +139,7 @@
                   </VBox>
                </children>
                <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
          </content>
