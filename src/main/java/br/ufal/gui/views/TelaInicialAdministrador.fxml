@@ -31,7 +31,7 @@
                   </ImageView>
                   <Label layoutX="27.0" layoutY="160.0" prefHeight="17.0" prefWidth="529.0" text="no seu cardápio é só clicar em outro botão e escolher sus mudanças. " />
                   <Label layoutX="42.0" layoutY="204.0" text="Equipe de Desenvolvimento:" />
-                  <Label layoutX="56.0" layoutY="241.0" text="Alisson Flávio" />
+                  <Label layoutX="56.0" layoutY="241.0" prefHeight="17.0" prefWidth="106.0" text="Luenda Gonçalves" />
                   <Label layoutX="55.0" layoutY="269.0" text="Anderson Ferreira" />
                   <Label layoutX="58.0" layoutY="298.0" text="Monaly Vital" />
                </children>
