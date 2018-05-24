@@ -1,4 +1,4 @@
-package br.ufal.gui;
+package schedule;
 
 import br.ufal.model.Funcionario;
 import br.ufal.persistencia.FuncionarioDAO;

@@ -8,10 +8,10 @@ import br.ufal.model.Funcionario;
 import br.ufal.model.Item;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
+import br.ufal.persistencia.ItemDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import schedule.AtualizarTabelaFuncionarios;
 
 public class AdministradorGUI extends TabPane implements Initializable{
 
@@ -69,6 +70,8 @@ public class AdministradorGUI extends TabPane implements Initializable{
 
 	@FXML
 	private Button btnExcluirItem;
+	
+	private ObservableList<Item> itemsList;
 
 	public AdministradorGUI() {
 
@@ -134,8 +137,22 @@ public class AdministradorGUI extends TabPane implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 
 		carregarTabelaFuncionarios();
+		carregarTabelaItens();
 		agendaTarefas();
 
+	}
+	
+	public void carregarTabelaItens() {
+		
+		columnItemDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao")); ;
+
+		columnItemValor.setCellValueFactory(new PropertyValueFactory<>("preco"));
+
+		ItemDAO iDao = new ItemDAO(new HsqldbJdbc());
+
+		itemsList = FXCollections.observableArrayList(iDao.selectListaDeItens());
+
+		tableCardapio.setItems(itemsList);
 	}
 
 	public void carregarTabelaFuncionarios() {
@@ -154,7 +171,8 @@ public class AdministradorGUI extends TabPane implements Initializable{
 	}
 
 	public void agendaTarefas() {
-
+		
+		//Tarefas de atualizar tabela de funcionarios
 		AtualizarTabelaFuncionarios atTabelaFuncionarios = new AtualizarTabelaFuncionarios();
 		atTabelaFuncionarios.setPeriod(Duration.seconds(1));
 		atTabelaFuncionarios.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -174,21 +192,59 @@ public class AdministradorGUI extends TabPane implements Initializable{
 			}
 		});
 		atTabelaFuncionarios.start();
+		
+		//Tarefa de atualizar tabela de Itens
 	}
 	
 	@FXML
-	void adicionarItem(ActionEvent event) {
-
+	void adicionarItem() {
+		
+		Stage stage = new Stage();
+		
+		Stage stageAtual = (Stage) btnAdicionarItem.getScene().getWindow();
+		
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(stageAtual);
+		
+		ItemCadastroGui iGui = new ItemCadastroGui(this);
+		try {
+			iGui.start(stage);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
-	void alterarItem(ActionEvent event) {
+	void alterarItem() {
+		
+		Item i = tableCardapio.getSelectionModel().getSelectedItem();
+		Stage stage = new Stage();
 
+		Stage stageAtual = (Stage) btnAdicionarItem.getScene().getWindow();
+
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(stageAtual);
+		
+		ItemCadastroGui iGui = new ItemCadastroGui(i, this);
+		try {
+			iGui.start(stage);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
 	@FXML
-	void excluirItem(ActionEvent event) {
+	void excluirItem() {
+		
+		Item i = tableCardapio.getSelectionModel().getSelectedItem();
+		
+		ItemDAO iDao = new ItemDAO(new HsqldbJdbc());
+		
+		iDao.apagarItem(i);
+		carregarTabelaItens();
 
 	}
 

@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
+import br.ufal.model.Funcionario;
 import br.ufal.model.Hash256;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
@@ -13,6 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -60,8 +62,16 @@ public class TelaLoginGui extends Application implements Initializable{
 		
 		if (funcionarioDAO.verificarLogin(usuario, senha)) {
 				//Acesso concedido, abrindo janela principal
+				Funcionario f = funcionarioDAO.selectFuncionarioByUserName(usuario);
 				
-				InicioGeral iGeral = new InicioGeral(new AdministradorGUI());
+				Parent parent = null;
+				
+				if (f.getCargo().equals("Gerente")) {
+					
+					parent = new AdministradorGUI();
+				}
+				
+				InicioGeral iGeral = new InicioGeral(parent);
 				Stage newStage = new Stage();
 				try {
 					iGeral.start(newStage);
@@ -71,6 +81,7 @@ public class TelaLoginGui extends Application implements Initializable{
 					
 					e.printStackTrace();
 				}
+				
 		} else {
 			//acesso negado
 			textFieldUsuario.setText("");

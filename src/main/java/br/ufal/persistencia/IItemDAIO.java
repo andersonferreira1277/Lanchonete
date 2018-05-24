@@ -11,8 +11,8 @@ public interface IItemDAIO {
 	public void insert(Item i);
 	public List<Item> selectListaDeItens();
 	public Item selecionarItemPorId(int id);
-	public void update(int indice, Item i);
-	public void apagarFuncionario(Item i);
+	public void update(int id, Item i);
+	public void apagarItem(Item i);
 }
 
 

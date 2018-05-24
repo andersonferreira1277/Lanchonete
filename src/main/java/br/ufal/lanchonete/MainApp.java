@@ -4,6 +4,7 @@ import br.ufal.gui.PrimeiraTelaDeCadastro;
 import br.ufal.gui.TelaLoginGui;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
+import br.ufal.persistencia.ItemDAO;
 import javafx.application.Application;
 
 public class MainApp {
@@ -13,6 +14,9 @@ public class MainApp {
 		//Verificando tabela funcionarios
 		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
 		funcionarioDAO.verificarTabelas();
+		
+		ItemDAO iDao = new ItemDAO(new HsqldbJdbc());
+		iDao.verificarTabela();
 		
 		if (funcionarioDAO.numeroDeFuncionarios() < 1) {
 			PrimeiraTelaDeCadastro primeiraTelaDeCadastro = new PrimeiraTelaDeCadastro();
