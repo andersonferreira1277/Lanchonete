@@ -15,6 +15,7 @@ public class MainApp {
 		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
 		funcionarioDAO.verificarTabelas();
 		
+		
 		ItemDAO iDao = new ItemDAO(new HsqldbJdbc());
 		iDao.verificarTabela();
 		

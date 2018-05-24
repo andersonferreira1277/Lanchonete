@@ -11,7 +11,7 @@ import java.util.List;
 
 import br.ufal.model.Item;
 
-public class ItemDAO implements IItemDAIO {
+public class ItemDAO implements IItemDAO {
 
 	private ConnectDB sgbd;
 
