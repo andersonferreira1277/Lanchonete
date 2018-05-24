@@ -75,6 +75,7 @@ public class FuncionarioGUI extends Application implements Initializable{
 		cena = new Scene(layout);
 
 		primaryStage.setScene(cena);
+		primaryStage.setTitle("Fazer Pedido");
 		primaryStage.show();
 
 	}

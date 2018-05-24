@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -24,17 +25,22 @@
                             <TableColumn fx:id="colunaValor" prefWidth="100.0" text="Valor" />
                           </columns>
                         </TableView>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="356.0" prefWidth="165.0">
                            <children>
                               <Button fx:id="buttonExclluir" mnemonicParsing="false" onAction="#ExcluirProduto" prefHeight="25.0" prefWidth="65.0" text="Excluir">
                                  <VBox.margin>
-                                    <Insets left="25.0" top="25.0" />
+                                    <Insets left="50.0" top="100.0" />
                                  </VBox.margin>
                               </Button>
                            </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="356.0" prefWidth="150.0">
                            <children>
+                              <Label prefHeight="17.0" prefWidth="81.0" text="Escolha Item :">
+                                 <VBox.margin>
+                                    <Insets left="30.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
                               <ComboBox fx:id="comboBoxPedido" prefWidth="150.0">
                                  <VBox.margin>
                                     <Insets left="10.0" top="25.0" />
