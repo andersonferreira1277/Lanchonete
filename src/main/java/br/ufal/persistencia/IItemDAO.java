@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.ufal.model.Item;
 
-public interface IItemDAIO {
+public interface IItemDAO {
 
 	public void criarTabela();
 	public void verificarTabela();

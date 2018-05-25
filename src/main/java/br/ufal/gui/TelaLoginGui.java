@@ -70,6 +70,9 @@ public class TelaLoginGui extends Application implements Initializable{
 					
 					parent = new AdministradorGUI();
 				}
+				if (f.getCargo().equals("Funcionário")) {
+					parent = new FuncionarioGUI();
+				}
 				
 				InicioGeral iGeral = new InicioGeral(parent);
 				Stage newStage = new Stage();

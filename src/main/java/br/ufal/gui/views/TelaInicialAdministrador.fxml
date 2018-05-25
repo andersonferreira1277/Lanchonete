@@ -144,36 +144,5 @@
             </HBox>
          </content>
       </Tab>
-      <Tab text="   Estoque   ">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Button layoutX="57.0" layoutY="52.0" mnemonicParsing="false" text="Adicionar Estoque" />
-                  <Button layoutX="57.0" layoutY="118.0" mnemonicParsing="false" text="Item Faltando" />
-                  <Button layoutX="57.0" layoutY="185.0" mnemonicParsing="false" text="Gerar Lista de Compras" />
-                  <ImageView fitHeight="100.0" fitWidth="138.0" layoutX="448.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../imagens/rvlanches.JPG" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
-      <Tab text="   Relatório   ">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Button layoutX="54.0" layoutY="50.0" mnemonicParsing="false" text="Total de Vendas por Funcionário" />
-                  <Button layoutX="54.0" layoutY="103.0" mnemonicParsing="false" text="Total de Vendas por Mês" />
-                  <ImageView fitHeight="101.0" fitWidth="141.0" layoutX="445.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../imagens/rvlanches.JPG" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
    </tabs>
 </fx:root>

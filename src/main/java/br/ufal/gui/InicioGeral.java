@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class InicioGeral extends Application{
 	
 	@FXML
-	private Pane vBoxCentral;
+	private VBox vBoxCentral;
 	
 	@FXML
 	private VBox layoutProprio;

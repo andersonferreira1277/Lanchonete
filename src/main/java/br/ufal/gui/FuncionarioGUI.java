@@ -1,5 +1,6 @@
 package br.ufal.gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class FuncionarioGUI extends Application implements Initializable{
+public class FuncionarioGUI extends VBox implements Initializable{
+	
 	@FXML
 	private Scene cena;
 	@FXML
@@ -50,6 +52,19 @@ public class FuncionarioGUI extends Application implements Initializable{
 	
 	List<Item> i;
 	List<Item> listaParaTabela = FXCollections.observableArrayList();
+	
+	public FuncionarioGUI() {
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("views/TelaFuncionario.fxml"));
+		loader.setRoot(this);
+		loader.setController(this);
+		try {
+			loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@FXML
 	void ExcluirProduto(ActionEvent event) {
@@ -67,17 +82,7 @@ public class FuncionarioGUI extends Application implements Initializable{
 			}
 		}
 	}
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("views/TelaFuncionario.fxml"));
-		loader.setController(this);
-		loader.load();
-		cena = new Scene(layout);
-
-		primaryStage.setScene(cena);
-		primaryStage.show();
-
-	}
+	
 	public void configurarTabela() {
 		colunaDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
 		colunaValor.setCellValueFactory(new PropertyValueFactory<>("preco"));
@@ -88,10 +93,6 @@ public class FuncionarioGUI extends Application implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		configurarTabela();
 		carregarComboBox();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 	public void carregarComboBox() {
