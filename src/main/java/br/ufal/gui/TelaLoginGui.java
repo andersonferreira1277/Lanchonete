@@ -1,21 +1,29 @@
 package br.ufal.gui;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javax.swing.JOptionPane;
 
+import br.ufal.model.Funcionario;
 import br.ufal.model.Hash256;
 import br.ufal.persistencia.FuncionarioDAO;
 import br.ufal.persistencia.HsqldbJdbc;
-import br.ufal.persistencia.LanchoneteDAO;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class TelaLoginGui extends Application{
+public class TelaLoginGui extends Application implements Initializable{
 	
 	private Scene cena;
 	@FXML
@@ -26,13 +34,14 @@ public class TelaLoginGui extends Application{
 	private TextField textFieldSenha;
 	@FXML
 	private Button btnEntrar;
+	@FXML
+	private ImageView imagem;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("views/TelaLoginGuiView.fxml"));
 		root = (VBox) loader.load();
-		
 		
 		cena = new Scene(root);
 		
@@ -41,32 +50,41 @@ public class TelaLoginGui extends Application{
 		primaryStage.setTitle("Login");
 		primaryStage.show();
 	}
-	
-	
+
 	@FXML
 	public void fazerLogin() {
 		String usuario = textFieldUsuario.getText();
 		String senha = Hash256.gerarHash(textFieldSenha.getText());
 		
-		HsqldbJdbc hsqldbJdbc = HsqldbJdbc.getInstance();
 		
-		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(hsqldbJdbc.getConnection());
+		FuncionarioDAO funcionarioDAO = new FuncionarioDAO(new HsqldbJdbc());
 		
 		
 		if (funcionarioDAO.verificarLogin(usuario, senha)) {
 				//Acesso concedido, abrindo janela principal
+				Funcionario f = funcionarioDAO.selectFuncionarioByUserName(usuario);
 				
-				TelaPrincipalGui telaPrincipalGui = new TelaPrincipalGui();
-				Stage primaryStage = new Stage();
+				Parent parent = null;
+				
+				if (f.getCargo().equals("Gerente")) {
+					
+					parent = new AdministradorGUI();
+				}
+				if (f.getCargo().equals("Funcionário")) {
+					parent = new FuncionarioGUI();
+				}
+				
+				InicioGeral iGeral = new InicioGeral(parent);
+				Stage newStage = new Stage();
 				try {
-					telaPrincipalGui.start(primaryStage);
+					iGeral.start(newStage);
 					Stage stageAtual = (Stage) textFieldUsuario.getScene().getWindow();
 					stageAtual.close();
-					System.out.println(root);
 				} catch (Exception e) {
 					
 					e.printStackTrace();
 				}
+				
 		} else {
 			//acesso negado
 			textFieldUsuario.setText("");
@@ -79,6 +97,15 @@ public class TelaLoginGui extends Application{
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		File file = new File("imagens/lanchonete.png");
+		Image img = new Image(file.toURI().toString());
+		imagem.setImage(img);
+		
 	}
 	
 

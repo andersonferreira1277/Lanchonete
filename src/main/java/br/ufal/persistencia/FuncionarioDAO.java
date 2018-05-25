@@ -12,160 +12,286 @@ import java.util.List;
 import br.ufal.model.Funcionario;
 
 public class FuncionarioDAO implements IFuncionarioDAO{
-	
+
 	//nomes das colunas como estão escritas no banco de dados
-	private final String TABLE_NAME = "FUNCIONARIOS";
-	private final String CODIGO_FUNCIONARIO = "CODIGO_FUNCIONARIO";
-	private final String NOME_FUNCIONARIO = "NOME_FUNCIONARIO";
-	private final String USUARIO_FUNCIONARIO = "USUARIO_FUNCIONARIO";
-	private final String ENDERECO_FUNCIONARIO = "ENDERECO_FUNCIONARIO";
-	private final String EMAIL = "EMAIL";
-	private final String SENHA = "SENHA";
-	
-	private Connection conn;
-	
-	public FuncionarioDAO(Connection conn) {
-		this.conn = conn;
+	private static final String TABLE_NAME = "FUNCIONARIOS";
+	private static final String CODIGO_FUNCIONARIO = "CODIGO_FUNCIONARIO";
+	private static final String NOME_FUNCIONARIO = "NOME_FUNCIONARIO";
+	private static final String USUARIO_FUNCIONARIO = "USUARIO_FUNCIONARIO";
+	private static final String CARGO_FUNCIONARIO = "CARGO_FUNCIONARIO";
+	private static final String ENDERECO_FUNCIONARIO = "ENDERECO_FUNCIONARIO";
+	private static final String EMAIL = "EMAIL";
+	private static final String SENHA = "SENHA";
+
+	private ConnectDB sgbd;
+
+	public FuncionarioDAO(ConnectDB sgbd) {
+		this.sgbd = sgbd;
 	}
 
+	/**
+	 * Cria a tabela FUNCIONARIOS no banco de dados
+	 */
 	public void criarTabelas() {
-		String tabelaFuncionarios = "CREATE TABLE FUNCIONARIOS (\n" + 
-				"    CODIGO_FUNCIONARIO INTEGER NOT NULL PRIMARY KEY,\n" + 
+
+		String sql = "CREATE TABLE FUNCIONARIOS (\n" + 
+				"    CODIGO_FUNCIONARIO INTEGER IDENTITY PRIMARY KEY,\n" + 
 				"    NOME_FUNCIONARIO VARCHAR(50) NOT NULL,\n" + 
-				"    USUARIO_FUNCIONARIO VARCHAR(15) NOT NULL UNIQUE,\n" + 
+				"    USUARIO_FUNCIONARIO VARCHAR(15) NOT NULL UNIQUE,\n" +
+				"    CARGO_FUNCIONARIO VARCHAR(20) NOT NULL,\n" +
 				"    ENDERECO_FUNCIONARIO VARCHAR(100) NOT NULL,\n" + 
-				"    EMAIL VARCHAR(30) NOT NULL UNIQUE,\n" + 
+				"    EMAIL VARCHAR(80) NOT NULL UNIQUE,\n" + 
 				"    SENHA VARCHAR(64) NOT NULL);";
-		
-		try {
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(tabelaFuncionarios);
-			close(stmt);
+
+		try (Connection conn = sgbd.getConnection();
+				Statement stmt = conn.createStatement();) {
+
+			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
+	/**
+	 * armazena no banco de dados um Funcionário
+	 * @param Recebe uma Funcionário e armazena no banco de dados
+	 */
 	public void insert(Funcionario funcionario) {
-		
-		String sql = "INSERT INTO FUNCIONARIOS (NOME_FUNCIONARIO, USUARIO_FUNCIONARIO, "
-				+ "ENDERECO_FUNCIONARIO, EMAIL, SENHA) VALUES (?, ?, ?, ?, ?)";
-		
-		try {
-			PreparedStatement preStmt = conn.prepareStatement(sql);
-			
+
+		String sql = "INSERT INTO FUNCIONARIOS (NOME_FUNCIONARIO, USUARIO_FUNCIONARIO, CARGO_FUNCIONARIO, "
+				+ "ENDERECO_FUNCIONARIO, EMAIL, SENHA) VALUES (?, ?, ?, ?, ?, ?)";
+
+		try (Connection conn = sgbd.getConnection();
+				PreparedStatement preStmt = conn.prepareStatement(sql);){
+
 			//inserindo os dados
-			
+
 			preStmt.setString(1, funcionario.getNomeFuncionario());
 			preStmt.setString(2, funcionario.getUsuarioFuncionario());
-			preStmt.setString(3, funcionario.getEnderecoFuncionario());
-			preStmt.setString(4, funcionario.getEmail());
-			preStmt.setString(5, funcionario.getSenha());
-			
+			preStmt.setString(3, funcionario.getCargo());
+			preStmt.setString(4, funcionario.getEnderecoFuncionario());
+			preStmt.setString(5, funcionario.getEmail());
+			preStmt.setString(6, funcionario.getSenha());
+
 			//executando no banco de dados
 			preStmt.executeUpdate();
-			conn.commit();
-			close(preStmt);
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Funcionario selectFuncionarioByUserName(String usuarioFuncionarioP) {
+
 		Funcionario resultado = null;
-		
+
 		String sql = "SELECT * FROM FUNCIONARIOS WHERE USUARIO_FUNCIONARIO=?;";
-		
-		try {
-			PreparedStatement preStmt = conn.prepareStatement(sql);
+
+		ResultSet rs = null;
+
+		try (Connection conn = sgbd.getConnection();
+				PreparedStatement preStmt = conn.prepareStatement(sql);
+				){
 			preStmt.setString(1, usuarioFuncionarioP);
-			
-			ResultSet rs = preStmt.executeQuery();
-			
+			rs = preStmt.executeQuery();
+
+
 			while(rs.next()) {
 				int codigoFuncionario = rs.getInt(CODIGO_FUNCIONARIO);
 				String nomeFuncionario = rs.getString(NOME_FUNCIONARIO);
 				String usuarioFuncionario = rs.getString(USUARIO_FUNCIONARIO);
+				String cargoFuncionario = rs.getString(CARGO_FUNCIONARIO);
 				String enderecoFuncionario = rs.getString(ENDERECO_FUNCIONARIO);
 				String email = rs.getString(EMAIL);
 				String senha = rs.getString(SENHA);
-				
+
 				resultado = new Funcionario(codigoFuncionario, nomeFuncionario, usuarioFuncionario, 
-						enderecoFuncionario, email, senha);
+						cargoFuncionario, enderecoFuncionario, email, senha);
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
 		}
+
 		return resultado;
 	}
-	
-	public List<Funcionario> select(String nomeFuncionario) {
-		
-		return null;
+
+	public List<Funcionario> selectListaDeFuncionarios() {
+
+		String sql = "SELECT * FROM "+TABLE_NAME+";";
+		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+		ResultSet rSet = null;
+
+		try (Connection conn = sgbd.getConnection();
+				Statement statement = conn.createStatement()){
+			rSet = statement.executeQuery(sql);
+
+			while (rSet.next()) {
+
+				int codigoFuncionario = rSet.getInt(CODIGO_FUNCIONARIO);
+				String nomeFuncionario = rSet.getString(NOME_FUNCIONARIO);
+				String usuarioFuncionario = rSet.getString(USUARIO_FUNCIONARIO);
+				String cargoFuncionario = rSet.getString(CARGO_FUNCIONARIO);
+				String enderecoFuncionario = rSet.getString(ENDERECO_FUNCIONARIO);
+				String email = rSet.getString(EMAIL);
+				String senha = rSet.getString(SENHA);
+
+				funcionarios.add(new Funcionario(codigoFuncionario, nomeFuncionario, usuarioFuncionario, 
+						cargoFuncionario, enderecoFuncionario, email, senha));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rSet != null) {
+				try {
+					rSet.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return funcionarios;
 	}
 
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * Conta o numero de funcionarios na tabela
+	 * @return retorna a quatidade de funcionarios
+	 */
+	public int numeroDeFuncionarios() {
 
-	public void delete() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void close(Statement stmt) {
-		try {
-			stmt.close();
+		int resultado = 0;
+		String sql = "SELECT COUNT(*) linhas\n" + 
+				"FROM "+TABLE_NAME+";";
+
+		ResultSet rSet = null;
+
+		try (Connection conn = sgbd.getConnection();
+				Statement statement = conn.createStatement();){
+
+			rSet = statement.executeQuery(sql);
+
+			while (rSet.next()) {
+				resultado = rSet.getInt(1);
+			}
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				rSet.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return resultado;
+	}
+
+	/**
+	 * Atualiza as informações de uma funcionario passado por paramêtro
+	 * @param f Recebe um funcionario existente no banco
+	 */
+	public void update(Funcionario f) {
+
+		String sql = "UPDATE "+TABLE_NAME+"\n" + 
+				"SET "+NOME_FUNCIONARIO+"=?,\n" + 
+				"	"+USUARIO_FUNCIONARIO+"=?,\n" + 
+				"	"+CARGO_FUNCIONARIO+"=?,\n" + 
+				"	"+ENDERECO_FUNCIONARIO+"=?,\n" + 
+				"	"+EMAIL+"=?,\n"+ 
+				"    "+SENHA+"=?" + 
+				"WHERE "+CODIGO_FUNCIONARIO+"=?;";
+
+		try (Connection conn = sgbd.getConnection();
+				PreparedStatement pStatement = conn.prepareStatement(sql);){
+
+			pStatement.setString( 1, f.getNomeFuncionario());
+			pStatement.setString(2, f.getUsuarioFuncionario());
+			pStatement.setString(3, f.getCargo());
+			pStatement.setString(4, f.getEnderecoFuncionario());
+			pStatement.setString(5, f.getEmail());
+			pStatement.setString(6, f.getSenha());
+			pStatement.setInt(7, f.getCodigoFuncionario());
+			
+			pStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			
 			e.printStackTrace();
 		}
 	}
-	
-	public void close (PreparedStatement preStmt) {
-		try {
-			preStmt.close();
+
+	/**
+	 * Apaga um Funcionário do banco de dados
+	 * @param Recebe o funcionário que será apagado
+	 */
+	public void apagarFuncionario(Funcionario f) {
+
+		String sql = "DELETE FROM "+TABLE_NAME+"\n" + 
+				"WHERE "+CODIGO_FUNCIONARIO+"=?;";
+
+		try (Connection conn = sgbd.getConnection();
+				PreparedStatement pStatement = conn.prepareStatement(sql);) {
+
+			pStatement.setInt(1, f.getCodigoFuncionario());
+			pStatement.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
+
 	public void verificarTabelas() {
-		try {
+
+		ResultSet rs = null;
+		try (Connection conn = sgbd.getConnection();){
 			ArrayList<String> tabelas = new ArrayList<String>();
 			DatabaseMetaData metaData = conn.getMetaData();
-			ResultSet rs = metaData.getTables(null, null, null, new String[] {"TABLE"});
+			rs = metaData.getTables(null, null, null, new String[] {"TABLE"});
 			while (rs.next()) {
 				tabelas.add(rs.getString(3));
 			}
-			
+
 			if (!tabelas.contains(TABLE_NAME)) {
 				criarTabelas();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
-	
+
 	public boolean verificarLogin(String login, String senha) {
-		//recebe login e senha e verifica no banco de dados
+		//recebe login e SENHA e verifica no banco de dados
 		//retorno true caso encontre e false caso não encontre
 		Funcionario funcionarioDoBanco = selectFuncionarioByUserName(login);
-		
+
 		if ( (login.equals(funcionarioDoBanco.getUsuarioFuncionario()) && 
 				(senha.equals(funcionarioDoBanco.getSenha())) )) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }
