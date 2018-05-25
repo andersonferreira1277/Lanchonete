@@ -7,6 +7,7 @@ import br.ufal.persistencia.HsqldbJdbc;
 import br.ufal.persistencia.ItemDAO;
 import javafx.application.Application;
 
+
 public class MainApp {
 
 	public static void main(String[] args) {
@@ -26,7 +27,6 @@ public class MainApp {
 			TelaLoginGui app = new TelaLoginGui();
 			Application.launch(app.getClass(), args);
 		}
-		
 		
 	}
 

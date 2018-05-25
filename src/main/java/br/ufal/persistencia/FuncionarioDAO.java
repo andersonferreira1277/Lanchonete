@@ -66,7 +66,6 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		try (Connection conn = sgbd.getConnection();
 				PreparedStatement preStmt = conn.prepareStatement(sql);){
 
-
 			//inserindo os dados
 
 			preStmt.setString(1, funcionario.getNomeFuncionario());
@@ -96,7 +95,6 @@ public class FuncionarioDAO implements IFuncionarioDAO{
 		try (Connection conn = sgbd.getConnection();
 				PreparedStatement preStmt = conn.prepareStatement(sql);
 				){
-
 			preStmt.setString(1, usuarioFuncionarioP);
 			rs = preStmt.executeQuery();
 

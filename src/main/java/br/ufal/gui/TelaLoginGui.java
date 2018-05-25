@@ -50,7 +50,7 @@ public class TelaLoginGui extends Application implements Initializable{
 		primaryStage.setTitle("Login");
 		primaryStage.show();
 	}
-	
+
 	@FXML
 	public void fazerLogin() {
 		String usuario = textFieldUsuario.getText();
